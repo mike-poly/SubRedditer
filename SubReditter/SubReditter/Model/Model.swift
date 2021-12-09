@@ -8,16 +8,20 @@
 
 import Foundation
 
-struct SubRedditResponseItems: Codable {
+public struct RedditResponse: Codable {
+    var data: SubRedditResponseItems
+}
+
+public struct SubRedditResponseItems: Codable {
     var children:[SubRedditItem]
 }
 
-struct SubRedditItem: Codable {
+public struct SubRedditItem: Codable {
+    var data: SubRedditItemData?
+}
+
+struct SubRedditItemData: Codable {
     var subreddit: String?
     var title: String?
-    var urlString: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case urlString = "url"
-    }
+    var url: String?
 }

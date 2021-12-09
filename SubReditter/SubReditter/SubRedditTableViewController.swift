@@ -17,9 +17,7 @@ class SubRedditTableViewController: UITableViewController {
         
         self.navigationItem.title = "SubReddit"
         
-        subRedditViewModel.getSubReddits(completion: { (retval) in
-            print("Loading : \(retval)")
-        })
+        subRedditViewModel.setup()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
