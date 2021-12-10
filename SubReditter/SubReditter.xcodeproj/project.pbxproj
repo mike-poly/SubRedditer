@@ -32,7 +32,7 @@
 		C21B90522762A6E900CD86DA /* SubRedditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubRedditViewModel.swift; sourceTree = "<group>"; };
 		C2B7A5C92762C018004BC028 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		C2B7A5CB2762D766004BC028 /* SubRedditTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubRedditTableViewCell.swift; sourceTree = "<group>"; };
-		C2BB4CC62763A77100F5ECCE /* RedditWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RedditWebViewController.swift; path = SubReditter/RedditWebViewController.swift; sourceTree = SOURCE_ROOT; };
+		C2BB4CC62763A77100F5ECCE /* RedditWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RedditWebViewController.swift; path = SubReditter/ViewControllers/RedditWebViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +52,31 @@
 				C219EC252763AA5E008B4CA5 /* WebKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C219EC272763B265008B4CA5 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				C2BB4CC62763A77100F5ECCE /* RedditWebViewController.swift */,
+				C21B904D2762A45F00CD86DA /* SubRedditTableViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		C219EC282763B278008B4CA5 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C21B90522762A6E900CD86DA /* SubRedditViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C219EC292763B281008B4CA5 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				C2B7A5C92762C018004BC028 /* Networking.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		C21B902F27629E4100CD86DA = {
@@ -76,10 +101,10 @@
 			children = (
 				C21B903B27629E4100CD86DA /* AppDelegate.swift */,
 				C21B90512762A54B00CD86DA /* Model */,
-				C21B904D2762A45F00CD86DA /* SubRedditTableViewController.swift */,
+				C219EC272763B265008B4CA5 /* ViewControllers */,
 				C2B7A5CF2762D76B004BC028 /* SubRedditTableViewCell */,
-				C21B90522762A6E900CD86DA /* SubRedditViewModel.swift */,
-				C2B7A5C92762C018004BC028 /* Networking.swift */,
+				C219EC282763B278008B4CA5 /* ViewModel */,
+				C219EC292763B281008B4CA5 /* Networking */,
 				C21B903F27629E4100CD86DA /* Main.storyboard */,
 				C21B904227629E4400CD86DA /* Assets.xcassets */,
 				C21B904427629E4400CD86DA /* LaunchScreen.storyboard */,
@@ -92,7 +117,6 @@
 			isa = PBXGroup;
 			children = (
 				C21B904F2762A54800CD86DA /* Model.swift */,
-				C2BB4CC62763A77100F5ECCE /* RedditWebViewController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

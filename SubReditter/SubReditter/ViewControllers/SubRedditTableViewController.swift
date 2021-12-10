@@ -18,17 +18,13 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
         super.viewDidLoad()
         
         self.navigationItem.title = "SubReddit"
+        let searchButton = UIBarButtonItem(barButtonSystemItem: .search,
+                                           target: self,
+                                           action: #selector(searchTapped))
+        self.navigationItem.rightBarButtonItem = searchButton
         
         viewModel.delegate = self
         viewModel.setup()
-        
-//        tableView.register(SubRedditTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -65,6 +61,27 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
         self.navigationController?.pushViewController(webViewController, animated: true)
     }
     
+    @IBAction func searchTapped(_ sender: Any) {
+        presentSearchAlert()
+    }
+    
+    private func presentSearchAlert() {
+        let searchAlertController = UIAlertController(title: "Search Seubreddits",
+                                                      message: "Search for available subreddits",
+                                                      preferredStyle: .alert)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        searchAlertController.addAction(cancel)
+        
+        let nextAction = UIAlertAction(title: "Search", style: .default) { action -> Void in
+            guard let text = searchAlertController.textFields?.first?.text else { return }
+            print("You entered \(text)")
+        }
+        searchAlertController.addAction(nextAction)
+
+        searchAlertController.addTextField(configurationHandler: nil)
+        present(searchAlertController, animated: true, completion: nil)
+    }
 
     /*
     // Override to support conditional editing of the table view.
