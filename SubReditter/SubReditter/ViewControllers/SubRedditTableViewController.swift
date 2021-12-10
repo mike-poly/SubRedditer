@@ -44,7 +44,7 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.subRedditItems?.items?.count ?? 0
+        return viewModel.itemCount()
     }
     
     func fetchItemsCompleted() {
@@ -98,6 +98,20 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print("fitler tapped")
+        searchBar.resignFirstResponder()
+        viewModel.filter(filterString: searchBar.text)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        viewModel.clearFilter()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if searchBar.text == "" {
+            viewModel.clearFilter()
+            searchBar.resignFirstResponder()
+        }
     }
 
     /*
