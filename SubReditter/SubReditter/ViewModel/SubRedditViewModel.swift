@@ -24,6 +24,17 @@ class SubRedditViewModel {
     
     private var filtering = false
     
+    public func setup() {
+        networking.getSubReddits(completion: { [weak self] (subRedditItems) in
+        print("results: \(String(describing: subRedditItems))")
+            DispatchQueue.main.async {
+                self?.subRedditItems = subRedditItems
+                self?.delegate?.fetchItemsCompleted()
+            }
+        })
+    }
+    
+    
     public func search(searchString: String?) {
         networking.getSubReddits(searchText: searchString,
                                  completion: { [weak self] (subRedditItems) in
@@ -41,8 +52,8 @@ class SubRedditViewModel {
         filtering = true
         print("items : \(items.count)")
         let filteredItems = items.filter { item in
-            guard let itemTitle = item.title else { return false }
-            return itemTitle.contains(string)
+            guard let itemTitle = item.subreddit else { return false }
+            return itemTitle.lowercased().contains(string.lowercased())
         }
         print("fitlered: \(filteredItems.count)")
         self.filteredItems?.items = filteredItems

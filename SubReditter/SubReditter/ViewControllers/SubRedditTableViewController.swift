@@ -25,6 +25,7 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
         
         searchBar.delegate = self
         viewModel.delegate = self
+        viewModel.setup()
     }
     
     private func setupNavItems() {
@@ -33,8 +34,6 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
                                            target: self,
                                            action: #selector(searchTapped))
         self.navigationItem.rightBarButtonItem = searchButton
-        
-        viewModel.delegate = self
     }
 
     // MARK: - Table view data source
@@ -102,16 +101,8 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
         viewModel.filter(filterString: searchBar.text)
     }
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        viewModel.clearFilter()
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        if searchBar.text == "" {
-            viewModel.clearFilter()
-            searchBar.resignFirstResponder()
-        }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.filter(filterString: searchBar.text)
     }
 
     /*

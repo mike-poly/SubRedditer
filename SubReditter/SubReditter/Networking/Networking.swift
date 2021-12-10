@@ -11,7 +11,7 @@ import Foundation
 public typealias RedditCompletion = (SubRedditItems?) -> ()
 
 private enum Endpoints: String {
-    case subreddit = "https://www.reddit.com/r/fitness/.json"
+    case subreddit = "https://www.reddit.com/.json"
 }
 
 class Networking {
