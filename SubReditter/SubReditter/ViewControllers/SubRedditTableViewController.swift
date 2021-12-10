@@ -13,6 +13,8 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     let viewModel = SubRedditViewModel()
     
     let reuseIdentifier = "reuseIdentifier"
+    
+    var searchString: String? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +26,7 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
         self.navigationItem.rightBarButtonItem = searchButton
         
         viewModel.delegate = self
-        viewModel.setup()
+//        viewModel.setup()
     }
 
     // MARK: - Table view data source
@@ -66,21 +68,25 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     }
     
     private func presentSearchAlert() {
-        let searchAlertController = UIAlertController(title: "Search Seubreddits",
-                                                      message: "Search for available subreddits",
+        let searchAlertController = UIAlertController(title: "Subreddits",
+                                                      message: "What do you want to find?",
                                                       preferredStyle: .alert)
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         searchAlertController.addAction(cancel)
         
-        let nextAction = UIAlertAction(title: "Search", style: .default) { action -> Void in
-            guard let text = searchAlertController.textFields?.first?.text else { return }
-            print("You entered \(text)")
+        let nextAction = UIAlertAction(title: "Search", style: .default) {[weak self] action -> Void in
+//            self?.searchString = searchAlertController.textFields?.first?.text
+            self?.performSearch(string: searchAlertController.textFields?.first?.text)
         }
         searchAlertController.addAction(nextAction)
 
         searchAlertController.addTextField(configurationHandler: nil)
         present(searchAlertController, animated: true, completion: nil)
+    }
+    
+    private func performSearch(string: String?) {
+        viewModel.search(searchString: string)
     }
 
     /*
