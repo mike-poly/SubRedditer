@@ -8,38 +8,29 @@
 
 import Foundation
 
-public typealias RedditCompletion = (RedditResponse?) -> ()
+public typealias RedditCompletion = (SubRedditItems?) -> ()
 
 class Networking {
     
     public func getSubReddits(completion: @escaping RedditCompletion) {
-        
-        
         guard let requestURL = URL(string: Endpoints.subreddit.rawValue) else { return }
-        
         let request = URLRequest(url: requestURL)
-        
         let requestTask = URLSession.shared.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if (error != nil) {
-                print("Error: \(error)")
+                print("Error: \(String(describing: error?.localizedDescription))")
                 completion(nil)
             } else {
                 completion(self.decodeData(data: data));
             }
         }
         requestTask.resume()
-        
     }
     
-    private func decodeData(data: Data?) -> RedditResponse? {
+    private func decodeData(data: Data?) -> SubRedditItems? {
         guard let jsonData = data else { return nil }
-        
-         print("data: \(jsonData)")
-        
         let decoder = JSONDecoder()
-        let subRedditResponseItems = try? decoder.decode(RedditResponse.self, from: jsonData)
-        
+        let subRedditResponseItems = try? decoder.decode(SubRedditItems.self, from: jsonData)
         return subRedditResponseItems
     }
     

@@ -12,11 +12,13 @@ import Foundation
 class SubRedditViewModel {
 
     private let networking = Networking()
+    
+    public var subReditItems: SubRedditItems? = nil
 
     public func setup() {
         
-        networking.getSubReddits(completion: { (subRedditResponseItems) in
-            print("results: \(String(describing: subRedditResponseItems))")
+        networking.getSubReddits(completion: { (subRedditItems) in
+            print("results: \(String(describing: subRedditItems))")
             
         })
         
