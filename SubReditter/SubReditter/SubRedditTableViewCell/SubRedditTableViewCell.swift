@@ -13,6 +13,7 @@ class SubRedditTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel?
     @IBOutlet weak var subredditLabel: UILabel?
     
+    static let reuseIdentifier = "cellReuseIdentifier"
     
     override func awakeFromNib() {
         super.awakeFromNib()

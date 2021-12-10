@@ -20,13 +20,13 @@ class SubRedditViewModel {
     
     public var subRedditItems: SubRedditItems? = nil
     
-    public var filteredItems: SubRedditItems? = nil
+    public var filteredItems: [SubRedditItem]? = nil
     
     private var filtering = false
     
     public func setup() {
         networking.getSubReddits(completion: { [weak self] (subRedditItems) in
-        print("results: \(String(describing: subRedditItems))")
+        print("results: \(String(describing: subRedditItems?.items?.count))")
             DispatchQueue.main.async {
                 self?.subRedditItems = subRedditItems
                 self?.delegate?.fetchItemsCompleted()
@@ -56,7 +56,8 @@ class SubRedditViewModel {
             return itemTitle.lowercased().contains(string.lowercased())
         }
         print("fitlered: \(filteredItems.count)")
-        self.filteredItems?.items = filteredItems
+        self.filteredItems = filteredItems
+        print("fitlered: \(self.filteredItems?.count)")
         self.delegate?.fetchItemsCompleted()
     }
     
@@ -67,9 +68,6 @@ class SubRedditViewModel {
     }
     
     public func itemCount() -> Int {
-        if filtering == true {
-            return filteredItems?.items?.count ?? 0
-        }
         return subRedditItems?.items?.count ?? 0
     }
     
@@ -77,11 +75,12 @@ class SubRedditViewModel {
         var collection = subRedditItems?.items
         
         if filtering == true {
-            collection = filteredItems?.items
+            collection = filteredItems
         }
         
+        print("Collection: \(collection?.count) indexPath: \(indexPath.row)")
         guard let itemsCount = collection?.count else { return nil }
-        guard itemsCount >= indexPath.row else { return nil }
+        guard itemsCount > indexPath.row else { return nil }
         guard let item = collection?[indexPath.row] else { return nil }
         return item
     }

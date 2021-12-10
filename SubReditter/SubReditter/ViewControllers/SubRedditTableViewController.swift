@@ -14,8 +14,6 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     
     let viewModel = SubRedditViewModel()
     
-    let reuseIdentifier = "reuseIdentifier"
-    
     var searchString: String? = nil
 
     override func viewDidLoad() {
@@ -48,11 +46,12 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     
     func fetchItemsCompleted() {
         tableView.reloadData()
+        print(tableView.visibleCells.count)
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: SubRedditTableViewCell.reuseIdentifier, for: indexPath)
         if let subRedditCell = cell as? SubRedditTableViewCell {
             let subRedditItem = viewModel.getSubRedditItemForRow(indexPath: indexPath)
             subRedditCell.titleLabel?.text = subRedditItem?.title
@@ -95,14 +94,29 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
         viewModel.search(searchString: string)
     }
     
+    
+    // MARK: - Search bar delegate
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print("fitler tapped")
         searchBar.resignFirstResponder()
-        viewModel.filter(filterString: searchBar.text)
+        sendSearchToViewModel(text: searchBar.text)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.filter(filterString: searchBar.text)
+        sendSearchToViewModel(text: searchBar.text)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        viewModel.clearFilter()
+    }
+    
+    private func sendSearchToViewModel(text: String?) {
+        if text == "" {
+            viewModel.clearFilter()
+            return
+        }
+        viewModel.filter(filterString: text)
     }
 
     /*
