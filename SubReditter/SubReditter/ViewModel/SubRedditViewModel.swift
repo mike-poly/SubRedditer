@@ -19,11 +19,24 @@ class SubRedditViewModel {
     private let networking = Networking()
     
     public var subRedditItems: SubRedditItems? = nil
+    
+    
 
     public func setup() {
         networking.getSubReddits(completion: { [weak self] (subRedditItems) in
             print("results: \(String(describing: subRedditItems))")
         
+            DispatchQueue.main.async {
+                self?.subRedditItems = subRedditItems
+                self?.delegate?.fetchItemsCompleted()
+            }
+        })
+    }
+    
+    public func search(searchString: String?) {
+        networking.getSubReddits(searchText: searchString,
+                                 completion: { [weak self] (subRedditItems) in
+            print("results: \(String(describing: subRedditItems))")
             DispatchQueue.main.async {
                 self?.subRedditItems = subRedditItems
                 self?.delegate?.fetchItemsCompleted()
