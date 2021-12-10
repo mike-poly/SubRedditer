@@ -8,7 +8,9 @@
 
 import UIKit
 
-class SubRedditTableViewController: UITableViewController, SubRedditViewModelDelegate {
+class SubRedditTableViewController: UITableViewController, SubRedditViewModelDelegate, UISearchBarDelegate {
+    
+    @IBOutlet weak var searchBar: UISearchBar!
     
     let viewModel = SubRedditViewModel()
     
@@ -19,14 +21,20 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "SubReddit"
+        self.setupNavItems()
+        
+        searchBar.delegate = self
+        viewModel.delegate = self
+    }
+    
+    private func setupNavItems() {
+        self.navigationItem.title = "Search"
         let searchButton = UIBarButtonItem(barButtonSystemItem: .search,
                                            target: self,
                                            action: #selector(searchTapped))
         self.navigationItem.rightBarButtonItem = searchButton
         
         viewModel.delegate = self
-//        viewModel.setup()
     }
 
     // MARK: - Table view data source
@@ -76,7 +84,6 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
         searchAlertController.addAction(cancel)
         
         let nextAction = UIAlertAction(title: "Search", style: .default) {[weak self] action -> Void in
-//            self?.searchString = searchAlertController.textFields?.first?.text
             self?.performSearch(string: searchAlertController.textFields?.first?.text)
         }
         searchAlertController.addAction(nextAction)
@@ -87,6 +94,10 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     
     private func performSearch(string: String?) {
         viewModel.search(searchString: string)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("fitler tapped")
     }
 
     /*
