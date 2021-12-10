@@ -42,26 +42,28 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     }
     
     func fetchItemsCompleted() {
-        print("Fetch completed")
         tableView.reloadData()
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-        
         if let subRedditCell = cell as? SubRedditTableViewCell {
-
             let subRedditItem = viewModel.getSubRedditItemForRow(indexPath: indexPath)
-            print("\(subRedditItem?.title)")
             subRedditCell.titleLabel?.text = subRedditItem?.title
             subRedditCell.subredditLabel?.text = subRedditItem?.subreddit
-            return subRedditCell
         }
-
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let subRedditItem = viewModel.getSubRedditItemForRow(indexPath: indexPath)
+        guard let url = subRedditItem?.url else { return }
+        let webViewController = RedditWebViewController()
+        webViewController.url = url
+        self.navigationController?.pushViewController(webViewController, animated: true)
+    }
     
 
     /*

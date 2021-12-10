@@ -16,9 +16,11 @@
 		C21B90532762A6E900CD86DA /* SubRedditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C21B90522762A6E900CD86DA /* SubRedditViewModel.swift */; };
 		C2B7A5CA2762C018004BC028 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B7A5C92762C018004BC028 /* Networking.swift */; };
 		C2B7A5CD2762D766004BC028 /* SubRedditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B7A5CB2762D766004BC028 /* SubRedditTableViewCell.swift */; };
+		C2BB4CC72763A77100F5ECCE /* RedditWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BB4CC62763A77100F5ECCE /* RedditWebViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C219EC252763AA5E008B4CA5 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C21B903827629E4100CD86DA /* SubReditter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubReditter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C21B903B27629E4100CD86DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C21B904027629E4100CD86DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -30,6 +32,7 @@
 		C21B90522762A6E900CD86DA /* SubRedditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubRedditViewModel.swift; sourceTree = "<group>"; };
 		C2B7A5C92762C018004BC028 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		C2B7A5CB2762D766004BC028 /* SubRedditTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubRedditTableViewCell.swift; sourceTree = "<group>"; };
+		C2BB4CC62763A77100F5ECCE /* RedditWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RedditWebViewController.swift; path = SubReditter/RedditWebViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,11 +46,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C219EC242763AA5E008B4CA5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C219EC252763AA5E008B4CA5 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C21B902F27629E4100CD86DA = {
 			isa = PBXGroup;
 			children = (
 				C21B903A27629E4100CD86DA /* SubReditter */,
 				C21B903927629E4100CD86DA /* Products */,
+				C219EC242763AA5E008B4CA5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				C21B904F2762A54800CD86DA /* Model.swift */,
+				C2BB4CC62763A77100F5ECCE /* RedditWebViewController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -164,6 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2B7A5CD2762D766004BC028 /* SubRedditTableViewCell.swift in Sources */,
+				C2BB4CC72763A77100F5ECCE /* RedditWebViewController.swift in Sources */,
 				C21B904E2762A45F00CD86DA /* SubRedditTableViewController.swift in Sources */,
 				C2B7A5CA2762C018004BC028 /* Networking.swift in Sources */,
 				C21B90532762A6E900CD86DA /* SubRedditViewModel.swift in Sources */,
@@ -317,6 +331,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HEKBEU7F8D;
 				INFOPLIST_FILE = SubReditter/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,6 +350,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = HEKBEU7F8D;
 				INFOPLIST_FILE = SubReditter/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
