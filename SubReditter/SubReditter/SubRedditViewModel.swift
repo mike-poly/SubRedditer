@@ -8,25 +8,33 @@
 
 import Foundation
 
+protocol SubRedditViewModelDelegate {
+    func fetchItemsCompleted()
+}
 
 class SubRedditViewModel {
+    
+    public var delegate: SubRedditViewModelDelegate?
 
     private let networking = Networking()
     
-    public var subReditItems: SubRedditItems? = nil
+    public var subRedditItems: SubRedditItems? = nil
 
     public func setup() {
-        
-        networking.getSubReddits(completion: { (subRedditItems) in
+        networking.getSubReddits(completion: { [weak self] (subRedditItems) in
             print("results: \(String(describing: subRedditItems))")
-            
-        })
         
+            DispatchQueue.main.async {
+                self?.subRedditItems = subRedditItems
+                self?.delegate?.fetchItemsCompleted()
+            }
+        })
     }
     
-}
-
-
-enum Endpoints: String {
-    case subreddit = "https://www.reddit.com/r/fitness/.json"
+    public func getSubRedditItemForRow(indexPath: IndexPath) -> SubRedditItem? {
+        guard let itemsCount = subRedditItems?.items?.count else { return nil }
+        guard itemsCount >= indexPath.row else { return nil }
+        guard let item = subRedditItems?.items?[indexPath.row] else { return nil }
+        return item
+    }
 }

@@ -10,6 +10,10 @@ import Foundation
 
 public typealias RedditCompletion = (SubRedditItems?) -> ()
 
+private enum Endpoints: String {
+    case subreddit = "https://www.reddit.com/r/fitness/.json"
+}
+
 class Networking {
     
     public func getSubReddits(completion: @escaping RedditCompletion) {

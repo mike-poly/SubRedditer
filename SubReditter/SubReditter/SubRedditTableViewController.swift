@@ -8,16 +8,21 @@
 
 import UIKit
 
-class SubRedditTableViewController: UITableViewController {
+class SubRedditTableViewController: UITableViewController, SubRedditViewModelDelegate {
     
-    let subRedditViewModel = SubRedditViewModel()
+    let viewModel = SubRedditViewModel()
+    
+    let reuseIdentifier = "reuseIdentifier"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = "SubReddit"
         
-        subRedditViewModel.setup()
+        viewModel.delegate = self
+        viewModel.setup()
+        
+//        tableView.register(SubRedditTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -29,24 +34,35 @@ class SubRedditTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-    
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return viewModel.subRedditItems?.items?.count ?? 0
+    }
+    
+    func fetchItemsCompleted() {
+        print("Fetch completed")
+        tableView.reloadData()
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        
+        if let subRedditCell = cell as? SubRedditTableViewCell {
 
-        // Configure the cell...
+            let subRedditItem = viewModel.getSubRedditItemForRow(indexPath: indexPath)
+            print("\(subRedditItem?.title)")
+            subRedditCell.titleLabel?.text = subRedditItem?.title
+            subRedditCell.subredditLabel?.text = subRedditItem?.subreddit
+            return subRedditCell
+        }
 
         return cell
     }
-    */
+    
+    
 
     /*
     // Override to support conditional editing of the table view.
