@@ -8,31 +8,32 @@
 
 import UIKit
 
+/// The Root view controller of the app. Shows a table view of fetched subreddit items.
 class SubRedditTableViewController: UITableViewController, SubRedditViewModelDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
-    let viewModel = SubRedditViewModel()
-    
-    var searchString: String? = nil
+    /// Instance of view model.
+    private let viewModel = SubRedditViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.setupNavItems()
+        self.navigationItem.title = "Reddits"
         
+        // Set delegates and view model
         searchBar.delegate = self
         viewModel.delegate = self
         viewModel.setup()
     }
     
-    private func setupNavItems() {
-        self.navigationItem.title = "Search"
-        let searchButton = UIBarButtonItem(barButtonSystemItem: .search,
-                                           target: self,
-                                           action: #selector(searchTapped))
-        self.navigationItem.rightBarButtonItem = searchButton
+    // MARK: - SubRedditViewModelDelegate
+    
+    func fetchItemsCompleted() {
+        // Reload items when view model is done updating.
+        tableView.reloadData()
     }
+    
 
     // MARK: - Table view data source
 
@@ -44,14 +45,10 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
         return viewModel.itemCount()
     }
     
-    func fetchItemsCompleted() {
-        tableView.reloadData()
-        print(tableView.visibleCells.count)
-    }
-
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SubRedditTableViewCell.reuseIdentifier, for: indexPath)
+        
+        // Setup for custom table view cell
         if let subRedditCell = cell as? SubRedditTableViewCell {
             let subRedditItem = viewModel.getSubRedditItemForRow(indexPath: indexPath)
             subRedditCell.titleLabel?.text = subRedditItem?.title
@@ -62,42 +59,24 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        // Find the appropriate item in the view model for the indexPath and extract the URL.
         let subRedditItem = viewModel.getSubRedditItemForRow(indexPath: indexPath)
         guard let url = subRedditItem?.url else { return }
+        
+        // Create a web view controller.
         let webViewController = RedditWebViewController()
+        // pass the url of out item for it to load.
         webViewController.url = url
+        
+        // Push web view controller.
         self.navigationController?.pushViewController(webViewController, animated: true)
     }
-    
-    @IBAction func searchTapped(_ sender: Any) {
-        presentSearchAlert()
-    }
-    
-    private func presentSearchAlert() {
-        let searchAlertController = UIAlertController(title: "Subreddits",
-                                                      message: "What do you want to find?",
-                                                      preferredStyle: .alert)
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        searchAlertController.addAction(cancel)
-        
-        let nextAction = UIAlertAction(title: "Search", style: .default) {[weak self] action -> Void in
-            self?.performSearch(string: searchAlertController.textFields?.first?.text)
-        }
-        searchAlertController.addAction(nextAction)
-
-        searchAlertController.addTextField(configurationHandler: nil)
-        present(searchAlertController, animated: true, completion: nil)
-    }
-    
-    private func performSearch(string: String?) {
-        viewModel.search(searchString: string)
-    }
-    
     
     // MARK: - Search bar delegate
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Dismiss keyboard
         searchBar.resignFirstResponder()
         sendSearchToViewModel(text: searchBar.text)
     }
@@ -106,62 +85,17 @@ class SubRedditTableViewController: UITableViewController, SubRedditViewModelDel
         sendSearchToViewModel(text: searchBar.text)
     }
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        viewModel.clearFilter()
-    }
-    
+    /// Send the string in the search bar to the view model
+    /// to perform a search on the fetched items.
+    /// If the string is empty - no search is performed.
+    ///
+    /// - Parameter text: string to filter the subreddits by.
     private func sendSearchToViewModel(text: String?) {
         if text == "" {
             viewModel.clearFilter()
             return
         }
+        // send search string to view model
         viewModel.filter(filterString: text)
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

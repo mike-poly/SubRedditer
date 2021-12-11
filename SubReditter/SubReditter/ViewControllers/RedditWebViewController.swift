@@ -9,10 +9,13 @@
 import UIKit
 import WebKit
 
+/// Web view loading the subreddit item.
 class RedditWebViewController: UIViewController {
 
-    let webView = WKWebView()
+    /// Web view instance
+    private let webView = WKWebView()
     
+    /// The url to laod in the web view.
     public var url: URL? = nil
     
     override func loadView() {
@@ -21,11 +24,11 @@ class RedditWebViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         loadURL()
     }
     
-    func loadURL() {
+    /// Loads the supplied url
+    private func loadURL() {
         guard let url = self.url else { return }
         let request = URLRequest(url: url)
         webView.load(request)
