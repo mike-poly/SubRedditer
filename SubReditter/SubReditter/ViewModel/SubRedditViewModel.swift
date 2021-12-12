@@ -9,7 +9,7 @@
 import Foundation
 
 /// Delagate protocol for the View Model.
-protocol SubRedditViewModelDelegate {
+protocol SubRedditViewModelDelegate : AnyObject {
     /// Method signalling we are done loading and parsing data.
     func fetchItemsCompleted()
 }
@@ -18,7 +18,7 @@ protocol SubRedditViewModelDelegate {
 class SubRedditViewModel {
     
     /// Delegate for item update completed.
-    public var delegate: SubRedditViewModelDelegate?
+    public weak var delegate: SubRedditViewModelDelegate?
 
     /// A reference to the Networking class - which handles network requests.
     private let networking = Networking()
